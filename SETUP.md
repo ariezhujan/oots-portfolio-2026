@@ -5,3 +5,4 @@
 3. `bun run dev`, lalu `bun run check` dan `bun run build`.
 
 Data konten ada di `src/lib/data.ts` (cari TODO). Gambar di `static/images/`, gim di `static/games/`.
+
