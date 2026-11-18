@@ -17,8 +17,8 @@ export const actions: Actions = {
 			return fail(400, { success: false, message: 'Periksa kembali kolom yang ditandai, lalu kirim ulang.', errors, values });
 		}
 
-		const apiKey = env.RESEND_API_KEY;
-		const to = env.RESEND_TO;
+		const apiKey = env.RESEND_API_KEY ?? process.env.RESEND_API_KEY;
+		const to = env.RESEND_TO ?? process.env.RESEND_TO;
 		if (!apiKey || !to) {
 			console.error('Contact form: RESEND_API_KEY or RESEND_TO is not set.');
 			return fail(500, { success: false, message: 'Formulir kontak belum siap digunakan. Silakan coba lagi nanti.', values });
