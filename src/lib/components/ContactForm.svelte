@@ -15,14 +15,14 @@
 	let clientErrors = $state<ContactErrors>({});
 	const errors = $derived({ ...(form?.errors ?? {}), ...clientErrors });
 
-	const field = 'mt-2 w-full border bg-bg px-3 py-2.5 outline-none focus-visible:border-accent';
+	const field = 'mt-2 w-full rounded-xl border bg-bg/60 px-4 py-3 outline-none focus-visible:border-accent';
 </script>
 
 <form
 	method="POST"
 	action="?/contact"
 	novalidate
-	class="max-w-xl space-y-5"
+	class="glass space-y-5 rounded-2xl p-5 md:p-8"
 	use:enhance={({ formData, cancel }) => {
 		clientErrors = validateContact({
 			name: String(formData.get('name') ?? '').trim(),
@@ -70,7 +70,7 @@
 
 	<div aria-live="polite" role="status">
 		{#if form?.message && !loading}
-			<p class="border-l-4 px-3 py-2 {form.success ? 'border-accent text-fg' : 'border-red-500 text-red-500'}">
+			<p class="rounded-lg border-l-4 px-3 py-2 {form.success ? 'border-accent text-fg' : 'border-red-500 text-red-500'}">
 				{form.message}
 			</p>
 		{/if}

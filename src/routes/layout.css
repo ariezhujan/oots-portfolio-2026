@@ -2,24 +2,26 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-	--bg: #edf0f2;
-	--panel: #f8fafb;
-	--line: #c9d2d9;
-	--line-strong: #8795a1;
-	--fg: #101820;
-	--muted: #54626f;
-	--accent: #08707f;
+	--bg: #eef3fc;
+	--panel: #ffffff;
+	--line: #cfd9ee;
+	--line-strong: #8b9bc4;
+	--fg: #0b1230;
+	--muted: #46547a;
+	--accent: #1d4ed8;
+	--accent-solid: #1d4ed8;
 	--accent-ink: #ffffff;
 }
 .dark {
-	--bg: #0d1218;
-	--panel: #131a22;
-	--line: #26323e;
-	--line-strong: #4a5b6b;
-	--fg: #e6ecf1;
-	--muted: #8a99a8;
-	--accent: #38d6e8;
-	--accent-ink: #04252a;
+	--bg: #050a1a;
+	--panel: #0c1530;
+	--line: #1f2e5a;
+	--line-strong: #3a4f8f;
+	--fg: #eef2ff;
+	--muted: #9fb0d9;
+	--accent: #7db2ff;
+	--accent-solid: #2563eb;
+	--accent-ink: #ffffff;
 }
 
 @theme inline {
@@ -30,6 +32,7 @@
 	--color-fg: var(--fg);
 	--color-muted: var(--muted);
 	--color-accent: var(--accent);
+	--color-accent-solid: var(--accent-solid);
 	--color-accent-ink: var(--accent-ink);
 	--font-display: 'Geologica Variable', ui-sans-serif, system-ui, sans-serif;
 	--font-sans: 'Geologica Variable', ui-sans-serif, system-ui, sans-serif;
@@ -38,46 +41,122 @@
 
 html {
 	scroll-behavior: smooth;
-	scroll-padding-top: 5rem;
+	scroll-padding-top: 6rem;
+	color-scheme: light;
+	--rise-base: 1.5s; /* hero baru muncul setelah layar muat selesai */
+}
+html.dark {
+	color-scheme: dark;
+}
+html.no-loader {
+	--rise-base: 0s;
 }
 body {
 	background-color: var(--bg);
-	background-image:
-		linear-gradient(color-mix(in srgb, var(--line) 35%, transparent) 1px, transparent 1px),
-		linear-gradient(90deg, color-mix(in srgb, var(--line) 35%, transparent) 1px, transparent 1px);
-	background-size: 40px 40px;
 	color: var(--fg);
 	overflow-x: clip;
 }
-
-.blueprint {
+/* Langit malam: titik bintang statis, tanpa animasi supaya ringan di HP. */
+.dark body {
 	background-image:
-		linear-gradient(color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px),
-		linear-gradient(90deg, color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px);
-	background-size: 40px 40px;
+		radial-gradient(1.2px 1.2px at 40px 60px, rgba(255, 255, 255, 0.7), transparent),
+		radial-gradient(1px 1px at 190px 30px, rgba(255, 255, 255, 0.5), transparent),
+		radial-gradient(1.4px 1.4px at 310px 120px, rgba(180, 210, 255, 0.7), transparent),
+		radial-gradient(1px 1px at 90px 210px, rgba(255, 255, 255, 0.45), transparent),
+		radial-gradient(1.2px 1.2px at 250px 260px, rgba(255, 255, 255, 0.6), transparent),
+		radial-gradient(1px 1px at 380px 330px, rgba(180, 210, 255, 0.5), transparent),
+		radial-gradient(1px 1px at 150px 370px, rgba(255, 255, 255, 0.4), transparent);
+	background-size: 420px 420px;
+}
+
+/* Garis grid ala lembar kerja teknik, dipakai di hero. */
+.blueprint {
+	position: relative;
+	isolation: isolate;
+}
+.blueprint::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background-image:
+		linear-gradient(color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px),
+		linear-gradient(90deg, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px);
+	background-size: 48px 48px;
+	-webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+	mask-image: linear-gradient(to bottom, #000 55%, transparent);
+	pointer-events: none;
 }
 
 @keyframes rise {
 	from { opacity: 0; transform: translateY(12px); }
 	to { opacity: 1; transform: none; }
 }
-.rise { animation: rise 0.6s ease-out both; }
+.rise {
+	animation: rise 0.6s ease-out both;
+	animation-delay: calc(var(--rise-base) + var(--d, 0s));
+}
+@keyframes panel-in {
+	from { opacity: 0; transform: translateY(8px); }
+	to { opacity: 1; transform: none; }
+}
+.panel-in {
+	animation: panel-in 0.35s ease-out both;
+}
+
+/* Layar muat dengan hitungan persen. */
+.loader {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	display: grid;
+	place-items: center;
+	background: var(--bg);
+	transition: opacity 0.5s ease, visibility 0.5s;
+}
+.loader[data-out='true'] {
+	opacity: 0;
+	visibility: hidden;
+}
+html.no-loader .loader {
+	display: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
-	html { scroll-behavior: auto; }
+	html { scroll-behavior: auto; --rise-base: 0s; }
+	.rise, .panel-in { animation: none; }
 	*, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
 @layer components {
+	.glass {
+		background: color-mix(in srgb, var(--panel) 62%, transparent);
+		border: 1px solid var(--line);
+		-webkit-backdrop-filter: blur(14px) saturate(1.2);
+		backdrop-filter: blur(14px) saturate(1.2);
+	}
+	@media (max-width: 767px) {
+		.glass {
+			-webkit-backdrop-filter: blur(8px);
+			backdrop-filter: blur(8px);
+		}
+	}
+	@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+		.glass { background: var(--panel); }
+	}
+
 	.btn {
 		display: inline-flex; align-items: center; justify-content: center;
-		padding: 0.7rem 1.25rem; font-weight: 500; border: 1px solid var(--fg);
-		transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+		padding: 0.75rem 1.25rem; font-weight: 500; border-radius: 0.75rem;
+		border: 1px solid var(--line-strong);
+		transition: background-color 0.15s, color 0.15s, border-color 0.15s, filter 0.15s;
 	}
-	.btn:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-	.btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-	.btn-primary:hover { background: transparent; color: var(--accent); }
-	.btn-ghost { border-color: var(--line); }
+	.btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+		outline: 2px solid var(--accent); outline-offset: 3px;
+	}
+	.btn-primary { background: var(--accent-solid); color: var(--accent-ink); border-color: var(--accent-solid); }
+	.btn-primary:hover { filter: brightness(1.15); }
+	.btn-ghost { border-color: var(--line-strong); }
 	.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 	.btn[aria-disabled='true'] { opacity: 0.55; cursor: not-allowed; border-style: dashed; }
 	.btn[aria-disabled='true']:hover { border-color: var(--line); color: inherit; }

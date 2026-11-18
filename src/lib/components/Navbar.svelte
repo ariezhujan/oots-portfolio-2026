@@ -5,9 +5,7 @@
 	const links = [
 		{ id: 'home', label: 'Beranda' },
 		{ id: 'about', label: 'Tentang' },
-		{ id: 'skills', label: 'Keahlian' },
-		{ id: 'projects', label: 'Proyek' },
-		{ id: 'achievements', label: 'Prestasi' },
+		{ id: 'portfolio', label: 'Portofolio' },
 		{ id: 'contact', label: 'Kontak' }
 	];
 
@@ -41,9 +39,14 @@
 	}
 </script>
 
-<header class="fixed inset-x-0 top-0 z-50 border-b border-line bg-bg/90 backdrop-blur-sm">
-	<nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5" aria-label="Utama">
-		<a href="#home" class="min-w-0 truncate font-display text-base font-semibold tracking-tight sm:text-xl">{profile.name}</a>
+<svelte:window onkeydown={(e) => e.key === 'Escape' && (open = false)} />
+
+<header class="pointer-events-none fixed inset-x-0 top-3 z-50 px-3">
+	<nav
+		class="glass pointer-events-auto mx-auto flex h-12 max-w-4xl items-center justify-between gap-2 rounded-full pr-1.5 pl-5"
+		aria-label="Utama"
+	>
+		<a href="#home" class="min-w-0 truncate font-display text-sm font-semibold tracking-tight sm:text-base">{profile.name}</a>
 
 		<ul class="hidden items-center gap-1 md:flex">
 			{#each links as l (l.id)}
@@ -51,24 +54,24 @@
 					<a
 						href="#{l.id}"
 						aria-current={active === l.id ? 'true' : undefined}
-						class="block border-b-2 px-3 py-2 text-sm transition-colors {active === l.id
-							? 'border-accent text-fg'
-							: 'border-transparent text-muted hover:text-fg'}">{l.label}</a
+						class="block rounded-full px-3.5 py-1.5 text-sm transition-colors {active === l.id
+							? 'bg-accent-solid text-accent-ink'
+							: 'text-muted hover:text-fg'}">{l.label}</a
 					>
 				</li>
 			{/each}
 		</ul>
 
-		<div class="flex shrink-0 items-center gap-2">
+		<div class="flex shrink-0 items-center gap-1">
 			<button
 				type="button"
 				onclick={toggleTheme}
-				class="border border-line px-3 py-1.5 font-mono text-xs transition-colors hover:border-accent"
+				class="h-9 rounded-full border border-line px-3 font-mono text-xs transition-colors hover:border-accent"
 				aria-label="Ganti ke tema {dark ? 'terang' : 'gelap'}">{dark ? 'Terang' : 'Gelap'}</button
 			>
 			<button
 				type="button"
-				class="border border-line px-3 py-1.5 text-sm md:hidden"
+				class="h-9 rounded-full border border-line px-3 text-sm md:hidden"
 				aria-expanded={open}
 				aria-controls="mobile-nav"
 				onclick={() => (open = !open)}>{open ? 'Tutup' : 'Menu'}</button
@@ -77,15 +80,14 @@
 	</nav>
 
 	{#if open}
-		<ul id="mobile-nav" class="border-t border-line bg-bg px-5 py-2 md:hidden">
+		<ul id="mobile-nav" class="glass pointer-events-auto mx-auto mt-2 max-w-4xl rounded-3xl p-2 md:hidden">
 			{#each links as l (l.id)}
 				<li>
 					<a
 						href="#{l.id}"
 						onclick={() => (open = false)}
 						aria-current={active === l.id ? 'true' : undefined}
-						class="block border-l-2 py-3 pl-3 {active === l.id ? 'border-accent text-fg' : 'border-transparent text-muted'}"
-						>{l.label}</a
+						class="block rounded-2xl px-4 py-3 {active === l.id ? 'bg-accent-solid text-accent-ink' : 'text-muted'}">{l.label}</a
 					>
 				</li>
 			{/each}

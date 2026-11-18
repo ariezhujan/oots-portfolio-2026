@@ -13,11 +13,11 @@
 </script>
 
 <article
-	class="group flex flex-col border border-line bg-panel transition-colors hover:border-accent {project.featured
+	class="group glass flex flex-col overflow-hidden rounded-2xl transition-colors hover:border-accent {project.featured
 		? 'md:col-span-2 md:grid md:grid-cols-2'
 		: ''}"
 >
-	<div class="aspect-video overflow-hidden border-b border-line bg-bg {project.featured ? 'md:aspect-auto md:min-h-80 md:border-r md:border-b-0' : ''}">
+	<div class="aspect-video overflow-hidden border-b border-line bg-bg/60 {project.featured ? 'md:aspect-auto md:min-h-80 md:border-r md:border-b-0' : ''}">
 		{#if project.image}
 			<img
 				src={project.image}
@@ -25,10 +25,10 @@
 				width="1185"
 				height="667"
 				loading="lazy"
-				class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+				class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
 			/>
 		{:else}
-			<div class="blueprint flex h-full items-center justify-center p-4 text-center font-mono text-xs text-muted">
+			<div class="flex h-full items-center justify-center p-4 text-center font-mono text-xs text-muted">
 				Foto proyek menyusul
 			</div>
 		{/if}
@@ -41,7 +41,7 @@
 		<p class="text-muted">{project.description}</p>
 		<ul class="flex flex-wrap gap-2" aria-label="Teknologi">
 			{#each stack as item (item)}
-				<li class="border border-line px-2 py-0.5 font-mono text-xs">{item}</li>
+				<li class="rounded-md border border-line px-2 py-0.5 font-mono text-xs">{item}</li>
 			{:else}
 				<li class="font-mono text-xs text-muted">Teknologi menyusul</li>
 			{/each}

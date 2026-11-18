@@ -6,7 +6,7 @@
 	const links = [
 		{ href: '#home', label: 'Beranda' },
 		{ href: '#about', label: 'Tentang Saya' },
-		{ href: '#projects', label: 'Proyek' },
+		{ href: '#portfolio', label: 'Proyek' },
 		{ href: '#contact', label: 'Kontak' }
 	];
 </script>
@@ -38,7 +38,7 @@
 	<a
 		href="#home"
 		aria-label="Kembali ke atas"
-		class="fixed right-4 bottom-4 z-40 flex h-10 w-10 items-center justify-center border border-line-strong bg-panel transition-colors hover:border-accent hover:text-accent"
+		class="glass fixed right-4 bottom-4 z-40 flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:border-accent hover:text-accent"
 	>
 		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10l5-5 5 5" /></svg>
 	</a>
