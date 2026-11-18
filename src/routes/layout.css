@@ -1,35 +1,88 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/geologica';
-@import '@fontsource/ibm-plex-mono/400.css';
-@import '@fontsource/ibm-plex-mono/500.css';
-
-/* Tema gelap dikendalikan class, bukan setting OS. Tanpa baris ini, `dark:`
-   mengikuti laptop masing-masing peserta dan tombol tema tidak berpengaruh. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-	--bg: #fcfcfa;
-	--surface: #f4f4f1;
-	--line: #e2e2dc;
-	--ink: #12120f;
-	--muted: #6b6b62;
-	--primary: #1d3fd1;
-	--on-primary: #fcfcfa;
-	--success: #047857;
-	--danger: #b91c1c;
+	--bg: #edf0f2;
+	--panel: #f8fafb;
+	--line: #c9d2d9;
+	--line-strong: #8795a1;
+	--fg: #101820;
+	--muted: #54626f;
+	--accent: #08707f;
+	--accent-ink: #ffffff;
+}
+.dark {
+	--bg: #0d1218;
+	--panel: #131a22;
+	--line: #26323e;
+	--line-strong: #4a5b6b;
+	--fg: #e6ecf1;
+	--muted: #8a99a8;
+	--accent: #38d6e8;
+	--accent-ink: #04252a;
 }
 
 @theme inline {
 	--color-bg: var(--bg);
-	--color-surface: var(--surface);
+	--color-panel: var(--panel);
 	--color-line: var(--line);
-	--color-ink: var(--ink);
+	--color-line-strong: var(--line-strong);
+	--color-fg: var(--fg);
 	--color-muted: var(--muted);
-	--color-primary: var(--primary);
-	--color-on-primary: var(--on-primary);
-	--color-success: var(--success);
-	--color-danger: var(--danger);
-	--font-sans: 'Geologica Variable', sans-serif;
-	--font-mono: 'IBM Plex Mono', monospace;
-	--radius-xs: 2px;
+	--color-accent: var(--accent);
+	--color-accent-ink: var(--accent-ink);
+	--font-display: 'Geologica Variable', ui-sans-serif, system-ui, sans-serif;
+	--font-sans: 'Geologica Variable', ui-sans-serif, system-ui, sans-serif;
+	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 5rem;
+}
+body {
+	background-color: var(--bg);
+	background-image:
+		linear-gradient(color-mix(in srgb, var(--line) 35%, transparent) 1px, transparent 1px),
+		linear-gradient(90deg, color-mix(in srgb, var(--line) 35%, transparent) 1px, transparent 1px);
+	background-size: 40px 40px;
+	color: var(--fg);
+	overflow-x: clip;
+}
+
+.blueprint {
+	background-image:
+		linear-gradient(color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px),
+		linear-gradient(90deg, color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px);
+	background-size: 40px 40px;
+}
+
+@keyframes rise {
+	from { opacity: 0; transform: translateY(12px); }
+	to { opacity: 1; transform: none; }
+}
+.rise { animation: rise 0.6s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+	*, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+@layer components {
+	.btn {
+		display: inline-flex; align-items: center; justify-content: center;
+		padding: 0.7rem 1.25rem; font-weight: 500; border: 1px solid var(--fg);
+		transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+	}
+	.btn:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+	.btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+	.btn-primary:hover { background: transparent; color: var(--accent); }
+	.btn-ghost { border-color: var(--line); }
+	.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+	.btn[aria-disabled='true'] { opacity: 0.55; cursor: not-allowed; border-style: dashed; }
+	.btn[aria-disabled='true']:hover { border-color: var(--line); color: inherit; }
+}
+
+body:has(dialog[open]) {
+	overflow: hidden;
 }
